@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body  {background-color: yellow;}
+section{
+padding: 10%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 80%;
+          flex: 1 1 80%;
+  min-height: 100vh;
+}
+div {
+  background: url('http://fillmurray.com/300/300') repeat;
+  color:white;
+  height:100%;
+  display:grid;
+  grid-template-rows:repeat(autofit,1fr);
+  grid-template-columns:repeat(auto-fit,minmax(50px,1fr));
+  grid-gap:20px;
+  background-color:red;
+}
+p{
+  grid-column:span 2;
+  background: #f96855;
+  font-weight: 700;
+  display: flex;
+  text-overflow: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  transition: all ease-in-out 300ms;
+  z-index: 10;
+}
+p:hover::before{
+content:"before";
+display:block;
+background:red;
+-webkit-animation: spin .1s linear infinite;
+animation: spin .1s linear infinite;
+-moz-animation:spin .1s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin{
+	100% { -webkit-transform:rotate(360deg);}
+}
+@keyframes spin{
+	100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); }
+}
+/*@media (max-width:200px) {
+  div {
+       grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  }
+}*/
+</style>
+</head>
+<body>
+<section>
+<div>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+<p>A grid column</p>
+</div>
+</section>
+
+<p><b>Note:</b> Internet Explorer does not support the background-blend-mode property.</p>
+
+</body>
+</html>
