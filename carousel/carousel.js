@@ -1,3 +1,15 @@
+// Test via a getter in the options object to see if the passive property is accessed
+let supportsPassive = false
+try {
+  var opts = Object.defineProperty({}, 'passive', {
+    get: function() {
+      supportsPassive = true
+    }
+  });
+  window.addEventListener("testPassive", null, opts)
+  window.removeEventListener("testPassive", null, opts)
+} catch (e) {console.error(e)}
+
 let counter = 1, mouseDown,x=0,y=0,transformX, moved;
 const $ = elem => document.querySelectorAll(elem)
 const carouselParent = $('.carousel')[0]
@@ -42,26 +54,16 @@ const outEvent = () =>{
     mouseDown = false
   }
 }
-const gotoSlide = slideId => {
-  counter = slideId
-  transform({transition:true})
-}
-carousel.addEventListener('mousedown',(e)=>{
+const downEvent = e => {
   moved = 0
   transformX = +carousel.style.transform.replace(/(translateX|px|\(|\))/gi,'')
-  const { pageX, pageY } = e
+  const { pageX, pageY } = (e.changedTouches && e.changedTouches[0]) || e
   !([x,y] = [pageX, pageY])
   mouseDown = true
-})
-carouselParent.addEventListener('mouseup',(e)=>{
-  outEvent()
-})
-carouselParent.addEventListener('mouseout',(e)=>{
-  outEvent()
-})
-carousel.addEventListener('mousemove',(e)=>{
+}
+const moveEvent = e => {
   if(mouseDown){
-    const {clientX} = e
+    const {clientX} = (e.changedTouches && e.changedTouches[0]) || e
     // console.log({x,clientX,"x - clientX":x - clientX,"clientX - x": clientX-x})
     moved = (x - clientX)
     if(moved){
@@ -70,7 +72,30 @@ carousel.addEventListener('mousemove',(e)=>{
       carousel.style.transform = `translateX(${displacementX}px)`
     }
   }
-})
+}
+const gotoSlide = slideId => {
+  counter = slideId
+  transform({transition:true})
+}
+
+['mousedown','touchstart'].forEach(eventType=>{
+  carousel.addEventListener(eventType,(e)=>{  
+    downEvent(e)
+  },supportsPassive ? { passive: true } : false)
+});
+
+['mouseup','mouseout','touchend'].forEach(eventType=>{
+  carousel.addEventListener(eventType,(e)=>{
+    outEvent()
+  })
+});
+
+['mousemove','touchmove'].forEach(eventType=>{
+  carousel.addEventListener(eventType,(e)=>{
+    moveEvent(e)
+  },supportsPassive ? { passive: true } : false)
+});
+
 const transform = ({transition}) => {
   mouseDown = false
   carousel.style.transition = transition ? `all .3s linear` : 'none'
