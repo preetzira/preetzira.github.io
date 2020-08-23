@@ -4,7 +4,7 @@
 body{
   font-family: Segoe UI, serif;
   margin:0;
-  overflow: hidden;
+  /* overflow-x: hidden; */
 }
 .center{
   text-align: center
@@ -19,7 +19,7 @@ a{
 .work-links{
   display: flex;
   max-width: 800px;
-  margin:auto;
+  margin: 10px auto 50px;
   flex-direction: column;
 }
 .work-links .link{
@@ -46,8 +46,6 @@ a{
 .work-links .link .description{
   border-right: 1px solid;
   width: 85%;
-}
-.work-links .link .demo{
 }
 .disclaimer{
   position: fixed;
